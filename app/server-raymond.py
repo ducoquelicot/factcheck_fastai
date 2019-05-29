@@ -1,36 +1,34 @@
-import aiohttp
-import asyncio
-import uvicorn
-from fastai import *
-from fastai.vision import *
-from io import BytesIO
 from starlette.applications import Starlette
-from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
+from starlette.middleware.cors import CORSMiddleware
+import uvicorn, aiohttp, asyncio
+from io import StringIO
+
+from fastai import *
+# from fastai.vision import *
+from fastai.text import *
 
 export_file_url = 'https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl'
+# export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
 export_file_name = 'export.pkl'
-
-classes = ['True', 'False']
+# added comment
+classes = ['neg', 'pos']
 path = Path(__file__).parent
 
 app = Starlette()
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
 app.mount('/static', StaticFiles(directory='app/static'))
 
-
 async def download_file(url, dest):
     if dest.exists(): return
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             data = await response.read()
-            with open(dest, 'wb') as f:
-                f.write(data)
-
+            with open(dest, 'wb') as f: f.write(data)
 
 async def setup_learner():
-    await download_file(export_file_url, path / export_file_name)
+    await download_file(export_file_url, path/export_file_name)
     try:
         learn = load_learner(path, export_file_name)
         return learn
@@ -42,46 +40,32 @@ async def setup_learner():
         else:
             raise
 
-
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
 learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
 loop.close()
 
-
 @app.route('/')
-async def homepage(request):
-    html_file = path / 'view' / 'index.html'
-    return HTMLResponse(html_file.open().read())
+def index(request):
+    html = path/'view'/'index.html'
+    return HTMLResponse(html.open().read())
 
-
+# @app.route('/analyze', methods=['GET'])
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
-    text_data = await request.form()
-    #img_bytes = await (img_data['file'].read())
-    #img = open_image(BytesIO(img_bytes))
-    test_text = text_data["textField"]
-    prediction = learn.predict(test_text)[0]
+    data = await request.json()
+    #data = await request.args['data']
+    print("data:", data)
+    # img_bytes = await (data['file'].read())
+    # took out img_bytes
+    # img = open_image(BytesIO(img_bytes))
+    img = data["textField"]
+    print("data['textField']", data["textField"])
+    print("img:", img)
+    # prediction = learn.predict(img)[0]
+    prediction = learn.predict(img)
+    print("prediction:", prediction)
     return JSONResponse({'result': str(prediction)})
 
-# # @app.route('/analyze', methods=['GET'])
-# @app.route('/analyze', methods=['POST'])
-# async def analyze(request):
-#     data = await request.json()
-#     #data = await request.args['data']
-#     print("data:", data)
-#     # img_bytes = await (data['file'].read())
-#     # took out img_bytes
-#     # img = open_image(BytesIO(img_bytes))
-#     img = data["textField"]
-#     print("data['textField']", data["textField"])
-#     print("img:", img)
-#     # prediction = learn.predict(img)[0]
-#     prediction = learn.predict(img)
-#     print("prediction:", prediction)
-#     return JSONResponse({'result': str(prediction)})
-
-
 if __name__ == '__main__':
-    if 'serve' in sys.argv:
-        uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
+    if 'serve' in sys.argv: uvicorn.run(app=app, host='0.0.0.0', port=5042)
