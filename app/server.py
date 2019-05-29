@@ -9,7 +9,7 @@ from fastai import *
 # from fastai.vision import *
 from fastai.text import *
 
-export_file_url = 'https://www.dropbox.com/s/xhnvw0axn6xjbk9/export.pkl?dl=1'
+export_file_url = 'https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl'
 # export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
 export_file_name = 'export.pkl'
 # added comment
