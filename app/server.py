@@ -9,10 +9,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl'
+export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
 export_file_name = 'export.pkl'
 
-classes = ['True', 'False']
+classes = ['black', 'grizzly', 'teddys']
 path = Path(__file__).parent
 
 app = Starlette()
@@ -57,29 +57,11 @@ async def homepage(request):
 
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
-    text_data = await request.form()
-    #img_bytes = await (img_data['file'].read())
-    #img = open_image(BytesIO(img_bytes))
-    test_text = text_data["textField"]
-    prediction = learn.predict(test_text)[0]
+    img_data = await request.form()
+    img_bytes = await (img_data['file'].read())
+    img = open_image(BytesIO(img_bytes))
+    prediction = learn.predict(img)[0]
     return JSONResponse({'result': str(prediction)})
-
-# # @app.route('/analyze', methods=['GET'])
-# @app.route('/analyze', methods=['POST'])
-# async def analyze(request):
-#     data = await request.json()
-#     #data = await request.args['data']
-#     print("data:", data)
-#     # img_bytes = await (data['file'].read())
-#     # took out img_bytes
-#     # img = open_image(BytesIO(img_bytes))
-#     img = data["textField"]
-#     print("data['textField']", data["textField"])
-#     print("img:", img)
-#     # prediction = learn.predict(img)[0]
-#     prediction = learn.predict(img)
-#     print("prediction:", prediction)
-#     return JSONResponse({'result': str(prediction)})
 
 
 if __name__ == '__main__':
