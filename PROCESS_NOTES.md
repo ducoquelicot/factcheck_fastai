@@ -197,5 +197,26 @@ Here's the diff of the two versions, which will be helpful in making the nlp ver
 
 Merge created a new event in the Render web service for my nlp classifier. But really this should just be a working version of the image-testing example.
 
+That works! 
+
+[image here]
+
+At https://aistudio-images.onrender.com/
+
+### Modifying Sample for NLP
+
+OK! I'm essentially where I would be had I _started_ in this repo with the updated example image code.
+
+Next, I'm going to modify it based on Raymond's mod ...
+
+- started with `view/index.html` page, which I copied over from Raymond's code.
+- same for the `static/client.js` file
+- in `server.py` ...
+    - updated the model url to https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl
+    - changed the classes to `classes = ['True', 'False']`
+    
+
+
+
 
 
