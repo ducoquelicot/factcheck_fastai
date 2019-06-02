@@ -62,11 +62,11 @@ async def analyze(request):
     # img = open_image(BytesIO(img_bytes))
     # prediction = learn.predict(img)[0]
     
-    form_data = await request.form()
-    print("Form data is: ")
-    print(form_data)
-    test_text = form_data["textField"]
-    prediction = learn.predict(test_text)[0]
+    incoming_json = await request.json()
+    print("JSON is: ")
+    print(incoming_json)
+    analyze_text = incoming_json["textField"]
+    prediction = learn.predict(analyze_text)[0]
     return JSONResponse({'result': str(prediction)})
 
 
