@@ -209,12 +209,19 @@ OK! I'm essentially where I would be had I _started_ in this repo with the updat
 
 Next, I'm going to modify it based on Raymond's mod ...
 
+- started a new branch off `master` called `build-classifier` 
 - started with `view/index.html` page, which I copied over from Raymond's code.
 - same for the `static/client.js` file
 - in `server.py` ...
     - updated the model url to https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl
     - changed the classes to `classes = ['True', 'False']`
-    
+    - changed the steps in the `/analyze` route
+- Merged this all to `master`, which triggers a rebuild in Render
+
+OK, that built and deployed! But getting an error on the processing.
+
+
+
 
 
 
