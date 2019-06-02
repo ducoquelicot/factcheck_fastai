@@ -186,5 +186,16 @@ cp Dockerfile ../nlp-classifier-fastai-render/
 cp requirements.txt ../nlp-classifier-fastai-render/
 cp -r app ../nlp-classifier-fastai-render/
 
+cd ../nlp-classifier-fastai-render/
+```
+
+- added the files to the branch
+- committed them to the branch
+- merged them up to master
+
+Here's the diff of the two versions, which will be helpful in making the nlp version: https://github.com/jkeefe/nlp-classifier-fastai-render/pull/1/files
+
+Merge created a new event in the Render web service for my nlp classifier. But really this should just be a working version of the image-testing example.
+
 
 
