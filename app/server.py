@@ -95,7 +95,7 @@ async def analyze(request):
 @app.route('/tweetcheck', methods=['POST'])
 async def tweetcheck(request):
     
-    print(request)
+    print(request.body)
     
     incoming_json = await request.json()
     print("JSON is: ")
