@@ -12,6 +12,19 @@ from starlette.staticfiles import StaticFiles
 export_file_url = 'https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl'
 export_file_name = 'export.pkl'
 
+# for the next line, I put the actual value in the "render" environment variables
+slack_webhook_url = os.getenv("QZ_SLACK_WEBHOOK") 
+
+# slack_intro_phrases = [
+#     "I think this tweet is checkable:", 
+#     "According to me, this is a checkable tweet:", 
+#     "This tweet look checkable to you? Because it does to me.", 
+#     "I spy a tweet that's fact-checkable:"]
+
+slack_intro_phrases = [
+    "Tweet checkability:"
+    ]
+
 classes = ['True', 'False']
 path = Path(__file__).parent
 
@@ -43,6 +56,19 @@ async def setup_learner():
             raise
 
 
+def slack_this(data, url):
+    
+    # if data['result'] == 'False':
+    #     message_color = "#cc0000" # red
+    # else:
+    #     message_color = "#009933" # green
+        
+    phrase = random.choice(slack_intro_phrases)
+        
+    slack_json = {
+        'text': f"{url}\n{phrase} *{data}*."
+    }
+
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
 learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
@@ -69,6 +95,20 @@ async def analyze(request):
     prediction = learn.predict(analyze_text)[0]
     return JSONResponse({'result': str(prediction)})
 
+@app.route('/analyze-and-slack', methods=['POST'])
+async def analyze(request):
+    # img_data = await request.form()
+    # img_bytes = await (img_data['file'].read())
+    # img = open_image(BytesIO(img_bytes))
+    # prediction = learn.predict(img)[0]
+    
+    incoming_json = await request.json()
+    print("JSON is: ")
+    print(incoming_json)
+    analyze_text = incoming_json["textField"]
+    prediction = learn.predict(analyze_text)[0]
+    slack_this(prediction, incoming_json["tweetLink"])
+    return JSONResponse({'result': str(prediction)})
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:

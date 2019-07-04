@@ -100,7 +100,8 @@ which saved the data, transforms, weights, etc into a file called `export.pkl` i
 Copied that to my local machine:
 
 ```
-scp ubuntu@52.4.42.129:data/tweets_ams/export.pkl Downloads
+cd Downloads
+scp ubuntu@52.4.42.129:data/tweets_ams/export.pkl export.pkl
 ```
 
 Then copied that to my S3 bucket.
@@ -220,9 +221,21 @@ Next, I'm going to modify it based on Raymond's mod ...
 
 OK, that built and deployed! But getting an error on the processing.
 
+Learning about starlette requests ... https://www.starlette.io/requests/
 
+... that led me to `await request.json()` 
 
+Got this working, tested with Postman 2:
 
+Endpoint: https://aistudio-nlp-tweets.onrender.com/analyze
+Content-Type: `application/json`
+Body: `{"textField": "Dan Patrick didn't fulfill his promise to give teachers an average $10,000 in salary raises."}`
+
+## Wiring it all up
+
+### IFTTT as the detector
+
+Set up an IFTTT applet to await a tweet containing #txlege
 
 
 
