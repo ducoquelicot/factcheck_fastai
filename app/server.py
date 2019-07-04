@@ -17,15 +17,11 @@ export_file_name = 'export.pkl'
 # for the next line, I put the actual value in the "render" environment variables
 slack_webhook_url = os.getenv("QZ_SLACK_WEBHOOK") 
 
-# slack_intro_phrases = [
-#     "I think this tweet is checkable:", 
-#     "According to me, this is a checkable tweet:", 
-#     "This tweet look checkable to you? Because it does to me.", 
-#     "I spy a tweet that's fact-checkable:"]
-
 slack_intro_phrases = [
-    "Tweet checkability:"
-    ]
+    "I think this tweet contains a checkable fact:", 
+    "According to me, this is a fact-checkable tweet:", 
+    "This tweet look fact-checkable to you? Because it does to me:", 
+    "I spy a tweet that has a checkable fact:"]
 
 classes = ['True', 'False']
 path = Path(__file__).parent
@@ -59,11 +55,6 @@ async def setup_learner():
 
 
 def slack_this(data, url):
-    
-    # if data['result'] == 'False':
-    #     message_color = "#cc0000" # red
-    # else:
-    #     message_color = "#009933" # green
         
     phrase = random.choice(slack_intro_phrases)
         
