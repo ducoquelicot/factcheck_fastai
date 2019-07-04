@@ -113,7 +113,12 @@ async def analyze(request):
     print(incoming_json)
     analyze_text = incoming_json["textField"]
     prediction = learn.predict(analyze_text)[0]
-    slack_this(prediction, incoming_json["tweetLink"])
+    
+    ## Slack if prediction is True and it's NOT a retweet
+    is_retweet = re.search("^RT ", analyze_text)
+    if prediction == "True" and not is_retweet:
+        slack_this(prediction, incoming_json["tweetLink"])
+    
     return JSONResponse({'result': str(prediction)})
 
 if __name__ == '__main__':
