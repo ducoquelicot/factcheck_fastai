@@ -1,6 +1,8 @@
 import aiohttp
 import asyncio
 import uvicorn
+import requests
+import random
 from fastai import *
 from fastai.vision import *
 from io import BytesIO
@@ -68,6 +70,10 @@ def slack_this(data, url):
     slack_json = {
         'text': f"{url}\n{phrase} *{data}*."
     }
+    
+    r = requests.post(slack_webhook_url, json=slack_json)
+    print(f"Sent to Slack. Response: {r.status_code}") 
+    return
 
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
