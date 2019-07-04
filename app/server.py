@@ -105,7 +105,7 @@ async def tweetcheck(request):
     
     ## Slack if prediction is True and it's NOT a retweet
     is_retweet = re.search("^RT ", analyze_text)
-    if prediction == "True" and not is_retweet:
+    if (prediction is "True") and (is_retweet is None):
         slack_this(prediction, incoming_json["tweetLink"])
     
     return JSONResponse({'result': str(prediction)})
