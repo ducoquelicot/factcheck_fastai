@@ -100,10 +100,6 @@ async def tweetcheck(request):
     analyze_text = incoming_json["textField"]
     prediction = learn.predict(analyze_text)[0]
     
-    ## Slack every text for testing:
-    just_text = f"Testing: ```{analyze_text}```"
-    slack_this(prediction, just_text)
-    
     ## Slack if prediction is True and it's NOT a retweet
     is_retweet = re.search("^RT ", analyze_text)
     if (prediction is "True") and (is_retweet is None):
