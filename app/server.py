@@ -94,14 +94,15 @@ async def analyze(request):
 
 @app.route('/tweetcheck', methods=['POST'])
 async def tweetcheck(request):
-    
-    print(request.body)
-    
     incoming_json = await request.json()
     print("JSON is: ")
     print(incoming_json)
     analyze_text = incoming_json["textField"]
     prediction = learn.predict(analyze_text)[0]
+    
+    ## Slack every text for testing:
+    just_text = f"Testing: ```{analyze_text}```"
+    slack_this(prediction, just_text)
     
     ## Slack if prediction is True and it's NOT a retweet
     is_retweet = re.search("^RT ", analyze_text)
