@@ -15,7 +15,8 @@ export_file_url = 'https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/
 export_file_name = 'export.pkl'
 
 # for the next line, I put the actual value in the "render" environment variables
-slack_webhook_url = os.getenv("QZ_SLACK_WEBHOOK") 
+slack_webhook_url = os.getenv("QZ_SLACK_WEBHOOK")
+statesman_webhook_url = os.getenv("STATESMAN_SLACK_WEBHOOK")
 
 slack_intro_phrases = [
     "I think this tweet contains a checkable fact:", 
@@ -62,7 +63,14 @@ def slack_this(data, url):
     }
     
     r = requests.post(slack_webhook_url, json=slack_json)
-    return r.status_code
+    p = requests.post(statesman_webhook_url, json=slack_json)
+    
+    status = {
+        'quartz': r.status_code,
+        'statesman': p.status_code
+    }
+    
+    return status
 
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
@@ -105,7 +113,7 @@ async def tweetcheck(request):
     if (str(prediction) is "True") and (is_retweet is None):
         slack_says = slack_this(prediction, incoming_json["tweetLink"])
     
-    return JSONResponse({'result': str(prediction), 'slack_status': slack_says})
+    return JSONResponse({'result': str(prediction), 'slack_status': status})
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
