@@ -113,7 +113,7 @@ async def tweetcheck(request):
     if (str(prediction) is "True") and (is_retweet is None):
         slack_says = slack_this(prediction, incoming_json["tweetLink"])
     
-    return JSONResponse({'result': str(prediction), 'slack_status': status})
+    return JSONResponse({'result': str(prediction), 'slack_status': slack_says})
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
