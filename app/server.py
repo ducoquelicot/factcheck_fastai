@@ -64,7 +64,7 @@ def slack_this(data, url):
     
     r = requests.post(slack_webhook_url, json=slack_json)
     print(f"Sent to Slack. Response: {r.status_code}") 
-    return
+    return r.status_code
 
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
@@ -102,11 +102,12 @@ async def tweetcheck(request):
     print(f"PREDICTION ^^^ is: {prediction}")
     
     ## Slack if prediction is True and it's NOT a retweet
+    slack_says = "unsent"
     is_retweet = re.search("^RT ", analyze_text)
-    if (prediction is "True") and (is_retweet is None):
-        slack_this(prediction, incoming_json["tweetLink"])
+    if (str(prediction) is "True") and (is_retweet is None):
+        slack_says = slack_this(prediction, incoming_json["tweetLink"])
     
-    return JSONResponse({'result': str(prediction)})
+    return JSONResponse({'result': str(prediction), 'slack_status': slack_says})
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
