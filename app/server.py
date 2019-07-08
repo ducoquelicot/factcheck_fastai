@@ -55,15 +55,13 @@ async def setup_learner():
 
 
 def slack_this(data, url):
-        
     phrase = random.choice(slack_intro_phrases)
         
     slack_json = {
-        'text': f"{url}\n{phrase} *{data}*."
+        'text': f"{url}\n{phrase}"
     }
     
     r = requests.post(slack_webhook_url, json=slack_json)
-    print(f"Sent to Slack. Response: {r.status_code}") 
     return r.status_code
 
 loop = asyncio.get_event_loop()
