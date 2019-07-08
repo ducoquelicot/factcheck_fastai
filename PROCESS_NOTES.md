@@ -235,7 +235,24 @@ Body: `{"textField": "Dan Patrick didn't fulfill his promise to give teachers an
 
 ### IFTTT as the detector
 
-Set up an IFTTT applet to await a tweet containing #txlege
+I set up an IFTTT applet to await a tweet containing `#txlege` and then send a "webhook"
+
+(Took lots of screenshots; See July 4, 2019 11 am)
+
+Note that the IFTTT instructions are _incorrect_ -- you need to escape any text ingredient (in my case, the tweet text) with _triple_ angle brackets. The ingredients themselves are surrounded with double curly brackets. So the final thing looks like this: `<<<{{TextIngredient}>>>`
+
+For the URL, I put my Render app's url and endpoint.
+
+I'm using POST ... and also `application/json`
+
+### True (but RT)
+
+From the Render logs:
+
+```
+Jul 4 04:32:30 PM  JSON is: {'textField': "RT @TexasNORML: #Veteran overdose deaths from opioids are rising. #Texas has the second highest veteran population in the nation (1.5M), committing suicide at more than twice the state rate. \n\nDespite evidence #marijuana is medicine, #txlege didn't include #PTSD.\n\nhttps://t.co/L3ZthtzxWZ https://t.co/wlvRa5N6BP", 'tweetLink': 'http://twitter.com/SpiderguyBen/status/1146871001587834880'}
+Jul 4 04:32:30 PM  PREDICTION ^^^ is: True
+```
 
 
 
