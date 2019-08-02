@@ -62,7 +62,7 @@ def slack_this(data, url):
         'text': f"{url}\n{phrase}"
     }
     
-    r = requests.post(slack_webhook_url, json=slack_json)
+    # r = requests.post(slack_webhook_url, json=slack_json)
     p = requests.post(statesman_webhook_url, json=slack_json)
     
     status = {
