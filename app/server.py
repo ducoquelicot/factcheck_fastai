@@ -15,7 +15,7 @@ export_file_url = 'https://drive.google.com/uc?export=download&id=1-0PYrpjCYbRJ6
 export_file_name = 'alt_export.pkl'
 
 # for the next line, I put the actual value in the "render" environment variables
-slack_webhook_url = os.getenv("VRTNWS_SLACK_WEBHOOK")
+slack_webhook_url = "https://hooks.slack.com/services/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"
 
 slack_intro_phrases = [
     "Dit lijkt op een fact-checkable tweet:", 
