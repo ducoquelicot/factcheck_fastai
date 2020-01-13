@@ -11,18 +11,18 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://s3.amazonaws.com/qz-aistudio-public/checkable-tweets/export.pkl'
-export_file_name = 'export.pkl'
+export_file_url = 'https://drive.google.com/uc?export=download&id=1-0PYrpjCYbRJ6fseHZrs-6nbGsR1v2b5'
+export_file_name = 'alt_export.pkl'
 
 # for the next line, I put the actual value in the "render" environment variables
 slack_webhook_url = os.getenv("QZ_SLACK_WEBHOOK")
 statesman_webhook_url = os.getenv("STATESMAN_SLACK_WEBHOOK")
 
 slack_intro_phrases = [
-    "I think this tweet contains a checkable fact:", 
-    "According to me, this is a fact-checkable tweet:", 
-    "This tweet look fact-checkable to you? Because it does to me:", 
-    "I spy a tweet that has a checkable fact:"]
+    "Dit lijkt op een fact-checkable tweet:", 
+    "Volgens mij kun je deze tweet factchecken:", 
+    "Denk je dat deze tweet gecheckt kan worden? Ik wel:", 
+    "Ik zie een tweet die je kunt factchecken:"]
 
 classes = ['True', 'False']
 path = Path(__file__).parent
