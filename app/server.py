@@ -4,7 +4,7 @@ import uvicorn
 import requests
 import random
 from fastai import *
-from fastai.vision import *
+from fastai.text import *
 from io import BytesIO
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
