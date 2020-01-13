@@ -68,8 +68,7 @@ def slack_this(data, url):
     status = {
         # 'quartz': r.status_code,
         # 'statesman': p.status_code,
-        'vrtnws': v.status_code,
-        'output': slack_webhook_url
+        'vrtnws': v.status_code
     }
     
     return status
