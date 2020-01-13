@@ -15,8 +15,7 @@ export_file_url = 'https://drive.google.com/uc?export=download&id=1-0PYrpjCYbRJ6
 export_file_name = 'alt_export.pkl'
 
 # for the next line, I put the actual value in the "render" environment variables
-slack_webhook_url = os.getenv("QZ_SLACK_WEBHOOK")
-statesman_webhook_url = os.getenv("STATESMAN_SLACK_WEBHOOK")
+slack_webhook_url = os.getenv("VRTNWS_SLACK_WEBHOOK")
 
 slack_intro_phrases = [
     "Dit lijkt op een fact-checkable tweet:", 
@@ -63,11 +62,13 @@ def slack_this(data, url):
     }
     
     # r = requests.post(slack_webhook_url, json=slack_json)
-    p = requests.post(statesman_webhook_url, json=slack_json)
+    # p = requests.post(statesman_webhook_url, json=slack_json)
+    v = requests.post(slack_webhook_url, json=slack_json)
     
     status = {
         'quartz': r.status_code,
-        'statesman': p.status_code
+        'statesman': p.status_code,
+        'vrtnws': v.status_code
     }
     
     return status
